@@ -1,7 +1,6 @@
 class PasswordResetsController < ApplicationController
 
 	def new
-		
 	end
 
 	def create
@@ -9,8 +8,8 @@ class PasswordResetsController < ApplicationController
 		if @user.present?
 			PasswordMailer.with(user: @user).reset.deliver_now
 		end
-		redirect_to root_path, notice: "We have sent a link to reset your password"
 
+		redirect_to root_path, notice: "We have sent a link to reset your password"
 	end
 
 	def edit
@@ -18,6 +17,7 @@ class PasswordResetsController < ApplicationController
 	rescue ActiveSupport::MessageVerifier::InvalidSignature
 		redirect_to sign_in_path, alert:"Your token has expired, plz try again"
 	end
+	
 	def update
 		@user = User.find_signed!(params[:token], purpose: "password_reset")
 		if @user.update(password_params)
